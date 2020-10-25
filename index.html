@@ -5,11 +5,106 @@
 		<style>
 			body{
 				margin: 0;
+				width: 100%;
+				height: 100%;
 				background: #000;
 				overflow: hidden;
 			}
-			#logo{
-				width: 80px;
+			.circle{
+				border-radius: 80px;
+				position: absolute;
+				width: 0px;
+				height: 0px;
+				margin: auto;
+				top:0;
+				bottom:0;
+				left:0;
+				right:0;
+			}
+
+			.white{ background-color: #fff; }
+			.black{ background-color: #000; }
+
+			.first{
+				animation: ani_scale_1 1.2s ease-in-out;
+				animation-fill-mode: both;
+			}
+
+			.second{
+				animation: ani_scale_2 1.2s ease-in-out;
+				animation-fill-mode: both;
+			}
+
+			.third{
+				animation: ani_scale_3 2.4s ease-in-out;
+				animation-fill-mode: both;
+			}
+
+			@keyframes ani_scale_1 {
+				0% { width: 0px; height: 0px; }
+				12.5% { width: 160px; height: 160px;}
+				50% { opacity: 0 }
+			}
+
+			@keyframes ani_scale_2 {
+				6.25% { width: 0px; height: 0px; }
+				18.75% { width: 162px; height: 162px; }
+				25% { width: 162px; height: 162px;}
+				50% { opacity: 0 }
+			}
+
+			@keyframes ani_scale_3 {
+				6.25% { width: 0px; height: 0px; top: 0px; }
+				12.5% { width: 162px; height: 162px; top: 0px; }
+				50% { width: 162px; height: 162px; top: 0px; }
+				62% { width: 162px; height: 162px; top: -50px; }
+				100% { width: 162px; height: 162px; top: -50px; }
+			}
+
+			#intro_logo{
+				opacity: 0;
+				position: absolute;
+				width: 164px;
+				margin: auto;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+
+				animation: ani_logo 2.4s ease-in-out;
+				animation-fill-mode: both;
+			}
+
+			@keyframes ani_logo {
+				12.5% { opacity: 0; top: 0px; }
+				40% { opacity: 1.0; top: 0px; }
+				50% { opacity: 1.0; top: 0px; }
+				62% { opacity: 1.0; top: -50px; }
+				74% { opacity: 1.0; top: -50px; }
+				100% { opacity: 1.0; top: -50px; }
+			}
+
+			#intro_text{
+				color: #fff;
+				opacity: 0;
+				text-align: center;
+				font-size: 200%;
+				height: 164px; 
+				position: absolute;
+				margin: auto;
+				top: 192px;
+				bottom: 0;
+				left: 0;
+				right: 0;
+
+				animation: ani_text 2.4s ease-in-out;
+				animation-fill-mode: both;
+			}
+
+			@keyframes ani_text {
+				57% { opacity: 0.0; top: 192px; }
+				69% { opacity: 1.0; top: 284px; }
+				100% { opacity: 1.0; top: 284px; }
 			}
 		</style>
 
@@ -20,6 +115,12 @@
 		</script>
 	</head>
 	<body>
-		<img id="logo" src = "img/Logo.png"/>
+		<div class="circle white first"></div>
+		<div class="circle black second"></div>
+		<div class="circle white third"></div>
+		<img id="intro_logo" src="img/Logo.png"/>
+		<div class="block"></div>
+		<div id="intro_text">Sample Text</div>
+		
 	</body>
 </html>
