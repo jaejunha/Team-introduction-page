@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<link type="text/css" rel="stylesheet" href="https://threejs.org/files/main.css">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 		<style>
 			body{
 				margin: 0;
@@ -26,18 +28,21 @@
 			.black{ background-color: #242424; }
 
 			.first{
-				animation: ani_scale_1 1.2s ease-in-out;
+				animation: ani_scale_1 4.8s ease-in-out;
 				animation-fill-mode: both;
+				animation-delay: 2s;
 			}
 
 			.second{
-				animation: ani_scale_2 1.2s ease-in-out;
-				animation-fill-mode: both;
+				animation: ani_scale_2 4.8s ease-in-out;
+				animation-fill-mode: both;-webkit-animation-delay: 3s;
+				animation-delay: 2s;
 			}
 
 			.third{
-				animation: ani_scale_3 2.4s ease-in-out;
-				animation-fill-mode: both;
+				animation: ani_scale_3 9.6s ease-in-out;
+				animation-fill-mode: both;-webkit-animation-delay: 3s;
+				animation-delay: 2s;
 			}
 
 			@keyframes ani_scale_1 {
@@ -57,7 +62,7 @@
 				6.25% { width: 0px; height: 0px; top: 0px; }
 				12.5% { width: 162px; height: 162px; top: 0px; }
 				50% { width: 162px; height: 162px; top: 0px; }
-				62% { width: 162px; height: 162px; top: -50px; }
+				56% { width: 162px; height: 162px; top: -50px; }
 				100% { width: 162px; height: 162px; top: -50px; }
 			}
 
@@ -71,56 +76,168 @@
 				left: 0;
 				right: 0;
 
-				animation: ani_logo 2.4s ease-in-out;
+				animation: ani_logo 9.6s ease-in-out;
 				animation-fill-mode: both;
+				animation-delay: 2s;
 			}
 
 			@keyframes ani_logo {
 				12.5% { opacity: 0; top: 0px; }
 				40% { opacity: 1.0; top: 0px; }
 				50% { opacity: 1.0; top: 0px; }
-				62% { opacity: 1.0; top: -50px; }
-				74% { opacity: 1.0; top: -50px; }
+				56% { opacity: 1.0; top: -50px; }
 				100% { opacity: 1.0; top: -50px; }
 			}
-
-			#intro_text{
-				color: #fff;
-				opacity: 0;
-				text-align: center;
-				font-size: 200%;
-				height: 164px; 
+			#container{
 				position: absolute;
-				margin: auto;
-				top: 192px;
-				bottom: 0;
-				left: 0;
-				right: 0;
-
-				animation: ani_text 2.4s ease-in-out;
-				animation-fill-mode: both;
-			}
-
-			@keyframes ani_text {
-				57% { opacity: 0.0; top: 192px; }
-				69% { opacity: 1.0; top: 284px; }
-				100% { opacity: 1.0; top: 284px; }
+				margin-top: 90px;
+				background-color: #242424;
 			}
 		</style>
 
-		<script>
-			$(function(){
-				// do something
+		<!-- reference: https://github.com/mrdoob/three.js/blob/master/examples/webgl_modifier_tessellation.html -->
+		<script type="x-shader/x-vertex" id="vertexshader">
+
+			uniform float amplitude;
+			attribute vec3 customColor;
+			attribute vec3 displacement;
+			varying vec3 vNormal;
+			varying vec3 vColor;
+
+			void main() {
+				vNormal = normal;
+				vColor = customColor;
+
+				vec3 newPosition = position + normal * amplitude * displacement;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+
+			}
+
+		</script>
+
+		<!-- reference: https://github.com/mrdoob/three.js/blob/master/examples/webgl_modifier_tessellation.html -->
+		<script type="x-shader/x-fragment" id="fragmentshader">
+
+			varying vec3 vNormal;
+			varying vec3 vColor;
+
+			void main() {
+				const float ambient = 0.4;
+
+				vec3 light = vec3( 1.0 );
+				light = normalize( light );
+
+				float directional = max( dot( vNormal, light ), 0.0 );
+
+				gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+			}
+		</script>
+
+		<!-- reference: https://github.com/mrdoob/three.js/blob/master/examples/webgl_modifier_tessellation.html -->
+		<script type="module">
+
+			var time = 0, end = false;
+
+			import * as THREE from './build/three.module.js';
+			import { TessellateModifier } from './TessellateModifier.js';
+
+			var renderer, scene, camera;
+			var uniforms;
+
+			var WIDTH = window.innerWidth;
+			var HEIGHT = window.innerHeight;
+
+			var loader = new THREE.FontLoader();
+			loader.load( './helvetiker_bold.typeface.json', function ( font ) {
+
+  				camera = new THREE.PerspectiveCamera( 40, WIDTH / HEIGHT, 1, 1000 );
+				camera.position.set( 0, 0, 1000 );
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x242424 );
+
+				uniforms = { amplitude: { value: 0.0 } };
+
+				var shaderMaterial = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: document.getElementById( 'vertexshader' ).textContent,
+					fragmentShader: document.getElementById( 'fragmentshader' ).textContent
+				} );
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( WIDTH, HEIGHT );
+
+				var container = document.getElementById( 'container' );
+				container.appendChild( renderer.domElement );
+				render(); 
+
+				var geometry = new THREE.TextGeometry( "WAY Team", {
+					font: font,
+					size: 30,
+					height: 5,
+					curveSegments: 20
+				} );
+				geometry.center();
+
+				var tessellateModifier = new TessellateModifier( 2 );
+				tessellateModifier.modify( geometry );
+				tessellateModifier.modify( geometry );
+				tessellateModifier.modify( geometry );
+				tessellateModifier.modify( geometry );
+				tessellateModifier.modify( geometry );
+				tessellateModifier.modify( geometry );
+
+				geometry = new THREE.BufferGeometry().fromGeometry( geometry );
+				var numFaces = geometry.attributes.position.count / 3;
+				var mesh = new THREE.Mesh( geometry, shaderMaterial );
+				scene.add( mesh );
+
+				setTimeout(function() {
+					var colors = new Float32Array( numFaces * 9 );
+					var displacement = new Float32Array( numFaces * 9 );
+
+					var i, d, f;
+					for (f = 0; f < numFaces; f ++ ) {
+						i = 9 * f;
+						d = 1000 * ( 0.5 - Math.random() );
+
+						colors[ i ] = colors[ i + 1 ] = colors[ i + 2 ] = colors[ i + 3 ] = colors[ i + 4 ] = colors[ i + 5 ] = colors[ i + 6 ] = colors[ i + 7 ] = colors[ i + 8 ] = 1;
+						displacement[ i ] = displacement[ i + 1 ] = displacement[ i + 2 ] = displacement[ i + 3 ] = displacement[ i + 4 ] = displacement[ i + 5 ] = displacement[ i + 6 ] = displacement[ i + 7 ] = displacement[ i + 8 ] = d;
+					}
+
+					geometry.setAttribute( 'customColor', new THREE.BufferAttribute( colors, 3 ) );
+					geometry.setAttribute( 'displacement', new THREE.BufferAttribute( displacement, 3 ) );
+
+					 animate(); 
+				}, 6000);
 			});
+
+			function animate() {
+				requestAnimationFrame( animate );
+				render();
+			}
+
+			function render() {
+				time += 0.05;
+
+				if (end == false){
+					uniforms.amplitude.value = 2 * (1 - Math.sin( time * 0.5 ));
+					if (uniforms.amplitude.value <= 0.01){
+						end = true;
+						uniforms.amplitude.value = 0;
+					}	
+				}
+
+				renderer.render( scene, camera );
+			}
 		</script>
 	</head>
 	<body>
+		<div id="container"></div>
 		<div class="circle white first"></div>
 		<div class="circle black second"></div>
 		<div class="circle white third"></div>
 		<img id="intro_logo" src="img/Logo.png"/>
-		<div class="block"></div>
-		<div id="intro_text">Sample Text</div>
-		
 	</body>
 </html>

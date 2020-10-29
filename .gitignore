@@ -1,3 +1,5 @@
 img/Logo.png
-
+*.js
+build/*
+helvetiker_bold.typeface.json
 birthday.txt
