@@ -9,7 +9,6 @@
 				margin: 0;
 				width: 100%;
 				height: 100%;
-				background-color: #242424;
 				overflow: hidden;
 			}
 
@@ -99,9 +98,9 @@
 				56% { opacity: 1.0; top: -50px; }
 				100% { opacity: 1.0; top: -50px; }
 			}
-			#container{
+			#intro_text{
 				position: absolute;
-				margin-top: 90px;
+				padding-top: 90px;
 				background-color: #242424;
 			}
 			
@@ -153,6 +152,7 @@
 		<script type="module">
 
 			var time = 0, off = 0, stage = 0;
+			var id;
 			var center_width = $(window).width() / 2;
 			var center_height = $(window).height() / 2;
 
@@ -191,7 +191,7 @@
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( WIDTH, HEIGHT );
 
-				var container = document.getElementById( 'container' );
+				var container = document.getElementById("intro_text");
 				container.appendChild( renderer.domElement );
 				render(); 
 
@@ -233,11 +233,14 @@
 					geometry.setAttribute( 'displacement', new THREE.BufferAttribute( displacement, 3 ) );
 
 					 animate(); 
+					
+					$("div").remove(".circle");
+					$("img").remove("#samsung");
 				}, 6000);
 			});
 
 			function animate() {
-				requestAnimationFrame( animate );
+				id = requestAnimationFrame( animate );
 				render();
 			}
 
@@ -353,17 +356,57 @@
 						ctx.lineTo(center_width - 100 - 0.707 * 100 + 0.707 * 10 * time - 0.707 * off, center_height - 100 - 0.707 * 100 + 0.707 * 10 * time - 0.707 * off);
 						ctx.stroke();
 						ctx.closePath();
-					}else if (time >= 10)
+					}else if (time >= 10){
 						stage = 2;
-				}
+						time = 0;
+						$("canvas").remove("#intro_lines");
+					}
+				} else if (stage == 2){
+					time += 1;
+					$("#intro_text").css({left: time * time / 4, position: "absolute"});
+					if (time * time / 4 > 2 * center_width){
+						stage = 3;
+						time = 164;
+						$("div").remove("#intro_text");
+					}
+				} else if (stage == 3){
+					time -= 2;
+					$("#intro_logo").css({width: time});
+					if (time == 80){
+						stage = 4;
+						time = 0;
+					}
+				} else if (stage == 4)
+					cancelAnimationFrame(id);
 
 				renderer.render( scene, camera );
 			}
 		</script>
 	</head>
 	<body>
-		<div id="container"></div>
-		<img id="samsung" src="img/Samsung.png"></div>
+		<div id = "temp" style="position:absolute;">
+			&nbsp;<b>Members</b><br>
+			&nbsp;LS (S-Super Mentor)<br>
+			&nbsp;PJS (D-Leader)<br>
+			&nbsp;KMJ (C-Fashionista)<br>
+			&nbsp;KSY (I-Drinker)<br>
+			&nbsp;KWJ (C-Keeper)<br>
+			&nbsp;KYR (I-AmongUs)<br>
+			&nbsp;PSY (S-Communicator)<br>
+			&nbsp;PHJ (C-Sweet DJ)<br>
+			&nbsp;PHJ (C-Class Clown)<br>
+			&nbsp;SJW (D-God Supporter)<br>
+			&nbsp;LSH (I-Comedian)<br>
+			&nbsp;LYM (D-Financialist)<br>
+			&nbsp;LJY (I-People Person)<br>
+			&nbsp;JHW (C-Chef)<br>
+			&nbsp;HJJ (C-Artist)<br>
+			&nbsp;HIH (C-One Word)<br>
+			&nbsp;HJ (S-Pianist)
+		</div>
+		
+		<div id="intro_text"></div>
+		<img id="samsung" src="img/Samsung.png"/>
 		<div class="circle white first"></div>
 		<div class="circle black second"></div>
 		<div class="circle white third"></div>
