@@ -10,6 +10,7 @@
 				width: 100%;
 				height: 100%;
 				overflow: hidden;
+				background-color: #242424;
 			}
 
 			#samsung{
@@ -85,6 +86,7 @@
 				bottom: 0;
 				left: 0;
 				right: 0;
+				z-index: 2; 
 
 				animation: ani_logo 9.6s ease-in-out;
 				animation-fill-mode: both;
@@ -101,12 +103,12 @@
 			#intro_text{
 				position: absolute;
 				padding-top: 90px;
-				background-color: #242424;
+				z-index: 2; 
 			}
 			
-			#intro_lines{ 
+			#intro_star{ 
 				position: absolute;
-				z-index: 999; 
+				z-index: 1; 
 			}
 		</style>
 
@@ -151,15 +153,8 @@
 		<!-- reference: https://github.com/mrdoob/three.js/blob/master/examples/webgl_modifier_tessellation.html -->
 		<script type="module">
 
-			var time = 0, off = 0, stage = 0;
+			var time = 0, end = false;
 			var id;
-			var center_width = $(window).width() / 2;
-			var center_height = $(window).height() / 2;
-
-			var ctx = document.getElementById("intro_lines").getContext("2d");
-			ctx.canvas.height = center_height * 2;
-			ctx.canvas.width = center_width * 2;
-			ctx.strokeStyle = "#fff";
 
 			import * as THREE from './build/three.module.js';
 			import { TessellateModifier } from './TessellateModifier.js';
@@ -177,7 +172,6 @@
 				camera.position.set( 0, 0, 1000 );
 
 				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0x242424 );
 
 				uniforms = { amplitude: { value: 0.0 } };
 
@@ -187,7 +181,7 @@
 					fragmentShader: document.getElementById( 'fragmentshader' ).textContent
 				} );
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( WIDTH, HEIGHT );
 
@@ -199,7 +193,7 @@
 					font: font,
 					size: 30,
 					height: 5,
-					curveSegments: 20
+					curveSegments: 10
 				} );
 				geometry.center();
 
@@ -245,145 +239,255 @@
 			}
 
 			function render() {
-				if (stage == 0){
+				if (end == false){
 					time += 0.05;
 					uniforms.amplitude.value = 2 * (1 - Math.sin( time * 0.5 ));
 					if (uniforms.amplitude.value <= 0.01){
-						stage = 1;
+						end = true;
+						time = 0;
 						uniforms.amplitude.value = 0;
-						time = -1;
+						animateStarField();
+						cancelAnimationFrame(id);
 					}	
-				} else if (stage == 1){
-					time += 0.1;
-					off = time * time * 9;
-					ctx.clearRect(0, 0, center_width * 10, center_height * 2);
-	
-					if (time >= 0 && time < 5){
-						ctx.beginPath();
-						ctx.moveTo(center_width + 100 + off, center_height);
-						ctx.lineTo(center_width + 100 + 10 * time + off, center_height);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width - 100 - off, center_height);
-						ctx.lineTo(center_width - 100 - 10 * time - off, center_height);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width, center_height + 100 + off);
-						ctx.lineTo(center_width, center_height + 100 + 10 * time + off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width, center_height - 100 - off);
-						ctx.lineTo(center_width, center_height - 100 - 10 * time - off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width + 100 + 0.707 * off, center_height + 100 + 0.707 * off);
-						ctx.lineTo(center_width + 100 + 0.707 * 10 * time + 0.707 * off, center_height + 100 + 0.707 * 10 * time + 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width + 100 + 0.707 * off, center_height - 100 - 0.707 * off);
-						ctx.lineTo(center_width + 100 + 0.707 * 10 * time + 0.707 * off, center_height - 100 - 0.707 * 10 * time - 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width - 100 - 0.707 * off, center_height + 100 + 0.707 * off);
-						ctx.lineTo(center_width - 100 - 0.707 * 10 * time - 0.707 * off, center_height + 100 + 0.707 * 10 * time + 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width - 100 - 0.707 * off, center_height- 100 - 0.707 * off);
-						ctx.lineTo(center_width - 100 - 0.707 * 10 * time - 0.707 * off, center_height - 100 - 0.707 * 10 * time - 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-					}
-
-					else if (time >= 5 &&  time < 10){
-						ctx.beginPath();
-						ctx.moveTo(center_width + 100 + off, center_height);
-						ctx.lineTo(center_width + 100 + 100 - 10 * time + off, center_height);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width - 100 - off, center_height);
-						ctx.lineTo(center_width - 100 - 100 + 10 * time - off, center_height);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width, center_height + 100 + off);
-						ctx.lineTo(center_width, center_height + 100 + 100 - 10 * time + off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width, center_height - 100 - off);
-						ctx.lineTo(center_width, center_height - 100 - 100 + 10 * time - off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width + 100 + 0.707 * off, center_height + 100 + 0.707 * off);
-						ctx.lineTo(center_width + 100 + 0.707 * 100 - 0.707 * 10 * time + 0.707 * off, center_height + 100 + 0.707 * 100 - 0.707 * 10 * time + 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width + 100 + 0.707 * off, center_height - 100 - 0.707 * off);
-						ctx.lineTo(center_width + 100 + 0.707 * 100 - 0.707 * 10 * time + 0.707 * off, center_height - 100 - 0.707 * 100 + 0.707 * 10 * time - 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width - 100 - 0.707 * off, center_height + 100 + 0.707 * off);
-						ctx.lineTo(center_width - 100 - 0.707 * 100 + 0.707 * 10 * time - 0.707 * off, center_height + 100 + 0.707 * 100 - 0.707 * 10 * time + 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-
-						ctx.beginPath();
-						ctx.moveTo(center_width - 100 - 0.707 * off, center_height- 100 - 0.707 * off);
-						ctx.lineTo(center_width - 100 - 0.707 * 100 + 0.707 * 10 * time - 0.707 * off, center_height - 100 - 0.707 * 100 + 0.707 * 10 * time - 0.707 * off);
-						ctx.stroke();
-						ctx.closePath();
-					}else if (time >= 10){
-						stage = 2;
-						time = 0;
-						$("canvas").remove("#intro_lines");
-					}
-				} else if (stage == 2){
-					time += 1;
-					$("#intro_text").css({left: time * time / 4, position: "absolute"});
-					if (time * time / 4 > 2 * center_width){
-						stage = 3;
-						time = 164;
-						$("div").remove("#intro_text");
-					}
-				} else if (stage == 3){
-					time -= 2;
-					$("#intro_logo").css({width: time});
-					if (time == 80){
-						stage = 4;
-						time = 0;
-					}
-				} else if (stage == 4)
-					cancelAnimationFrame(id);
+				} 
 
 				renderer.render( scene, camera );
 			}
 		</script>
+
+		<!-- Reference: http://jsfiddle.net/ditman/8Ffrw/ -->
+		<script>
+		function animateStarField(){
+			/**
+			 * The stars in our starfield!
+			 * Stars coordinate system is relative to the CENTER of the canvas
+			 * @param  {number} x 
+			 * @param  {number} y
+			 */
+
+			var Star = function(x, y, maxSpeed) {
+				this.x = x;
+				this.y = y;
+				this.slope = y / x; // This only works because our origin is always (0,0)
+				this.opacity = 0;
+				this.speed = Math.max(Math.random() * maxSpeed, 1);
+			};
+
+			/**
+			 * Compute the distance of this star relative to any other point in space.
+			 * 
+			 * @param  {int} originX
+			 * @param  {int} originY
+			 * 
+			 * @return {float} The distance of this star to the given origin
+			 */
+			Star.prototype.distanceTo = function(originX, originY) {
+				return Math.sqrt(Math.pow(originX - this.x, 2) + Math.pow(originY - this.y, 2));
+			};
+
+			/**
+			 * Reinitializes this star's attributes, without re-creating it 
+			 * 
+			 * @param  {number} x 
+			 * @param  {number} y
+			 * 
+			 * @return {Star} this star
+			 */
+
+			Star.prototype.resetPosition = function(x, y, maxSpeed) {
+				Star.apply(this, arguments);
+				return this;
+			};
+
+			/**
+			 * The BigBang factory creates stars (Should be called StarFactory, but that is
+			 * a WAY LESS COOL NAME! 
+			 * @type {Object}
+			 */
+			var BigBang = {
+				/**
+				 * Returns a random star within a region of the space.
+		     		 * 
+    				 * @param  {number} minX minimum X coordinate of the region
+    				 * @param  {number} minY minimum Y coordinate of the region
+    				 * @param  {number} maxX maximum X coordinate of the region
+    				 * @param  {number} maxY maximum Y coordinate of the region
+    				 * 
+    				 * @return {Star} The random star
+    				 */
+				getRandomStar: function(minX, minY, maxX, maxY, maxSpeed) {
+					var coords = BigBang.getRandomPosition(minX, minY, maxX, maxY);
+					return new Star(coords.x, coords.y, maxSpeed);
+				},
+
+				/**
+				 * Gets a random (x,y) position within a bounding box
+				 * 
+				 * 
+				 * @param  {number} minX minimum X coordinate of the region
+				 * @param  {number} minY minimum Y coordinate of the region
+				 * @param  {number} maxX maximum X coordinate of the region
+				 * @param  {number} maxY maximum Y coordinate of the region
+				 * 
+				 * @return {Object} An object with random {x, y} positions
+				 */
+				getRandomPosition: function(minX, minY, maxX, maxY) {
+					return {
+						x: Math.floor((Math.random() * maxX) + minX),
+						y: Math.floor((Math.random() * maxY) + minY)
+					};
+				}
+			};
+
+			/**
+			 * Constructor function of our starfield. This just prepares the DOM nodes where
+			 * the scene will be rendered.
+			 * 
+			 * @param {string} canvasId The DOM Id of the <div> containing a <canvas> tag
+			 */
+			var StarField = function() {
+				var ctx = document.getElementById("intro_star").getContext("2d");
+				this.canvas = ctx;
+				ctx.canvas.width =$(window).width();
+				ctx.canvas.height =$(window).height();
+				this.width = $(window).width();
+				this.height = $(window).height();
+
+				this.starField = [];
+			};
+
+			/**
+			 * Updates the properties for every star for the next frame to be rendered
+			 */
+			StarField.prototype._updateStarField = function() {
+				var i, star, randomLoc, ncrement;
+
+				for (i = 0; i < this.numStars; i++) {
+					star = this.starField[i];
+        
+					increment = Math.min(star.speed, Math.abs(star.speed / star.slope));
+					star.x += (star.x > 0) ? increment : -increment;
+					star.y = star.slope * star.x;
+        
+					star.opacity += star.speed / 100;
+        
+					// Recycle star obj if it goes out of the frame
+					if ((Math.abs(star.x) > this.width / 2) || (Math.abs(star.y) > this.height / 2)) {
+						randomLoc = BigBang.getRandomPosition(
+							-this.width / 10, -this.height / 10, this.width / 5, this.height / 5
+						);
+						star.resetPosition(randomLoc.x, randomLoc.y, this.maxStarSpeed);
+					}
+				}
+			};
+
+			/**
+			 * Renders the whole starfield (background + stars)
+			 * This method could be made more efficient by just blipping each star,
+			 * and not redrawing the whole frame
+			 */
+			StarField.prototype._renderStarField = function() {
+				var i, star;
+
+				// Background
+				this.canvas.fillStyle = "rgba(36, 36, 36, 0.3)";
+				this.canvas.fillRect(0, 0, this.width, this.height);
+
+				// Stars
+				for (i = 0; i < this.numStars; i++) {
+					star = this.starField[i];		
+					this.canvas.fillStyle = "rgba(255, 255, 255, " + star.opacity + ")";
+					this.canvas.fillRect(star.x + this.width / 2, star.y + this.height / 2, 2, 2);
+				}
+			};
+
+			/**
+			 * Function that handles the animation of each frame. Update the starfield
+			 * positions and re-render
+			 */
+			StarField.prototype._renderFrame = function(elapsedTime) {
+				var timeSinceLastFrame = elapsedTime - (this.prevFrameTime || 0);
+    
+				window.requestAnimationFrame(this._renderFrame.bind(this));
+
+				// Skip frames unless at least 30ms have passed since the last one
+				// (Cap to ~30fps)
+				if (timeSinceLastFrame >= 30 || !this.prevFrameTime) {
+					this.prevFrameTime = elapsedTime;
+					this._updateStarField();
+					this._renderStarField();
+				}
+			};
+
+			/**
+			 * This listener compares the old container size with the new one, and caches
+			 * the new values.
+			 */
+			StarField.prototype._watchCanvasSize = function(elapsedTime) {
+				var timeSinceLastCheck = elapsedTime - (this.prevCheckTime || 0), width, height;
+				window.requestAnimationFrame(this._watchCanvasSize.bind(this));
+			};
+
+			/**
+			 * Initializes the scene by resizing the canvas to the appropiate value, and
+			 * sets up the main loop.
+			 * @param {int} numStars Number of stars in our starfield
+			 */
+			StarField.prototype._initScene = function(numStars) {
+				for (var i = 0; i < this.numStars; i++)
+					this.starField.push(BigBang.getRandomStar(-this.width / 2, -this.height / 2, this.width, this.height, this.maxStarSpeed));
+
+				// Intervals not stored because I don't plan to detach them later...
+				window.requestAnimationFrame(this._renderFrame.bind(this));
+				window.requestAnimationFrame(this._watchCanvasSize.bind(this));
+			};
+
+			/**
+			 * Kicks off everything!
+			 * @param {int} numStars The number of stars to render
+			 * @param {int} maxStarSpeed Maximum speed of the stars (pixels / frame)
+			 */
+			StarField.prototype.render = function(numStars, maxStarSpeed) {
+				this.numStars = numStars || 100;
+				this.maxStarSpeed = maxStarSpeed || 3;
+
+				this._initScene(this.numStars);
+			};
+
+			/**
+			 * requestAnimationFrame shim layer with setTimeout fallback
+			 * @see http://paulirish.com/2011/requestanimationframe-for-smart-animating
+			 */
+			(function() {
+				var lastTime = 0;
+				var vendors = ['ms', 'moz', 'webkit', 'o'];
+				for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+					window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+				window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+			}
+ 
+			if (!window.requestAnimationFrame)
+				window.requestAnimationFrame = function(callback, element) {
+					var currTime = new Date().getTime();
+					var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+					var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
+					lastTime = currTime + timeToCall;
+					return id;
+				};
+ 
+			if (!window.cancelAnimationFrame)
+				window.cancelAnimationFrame = function(id) {
+					clearTimeout(id);
+				};
+			}());
+
+			// Kick off!
+			var starField = new StarField().render(333, 3);
+		}
+		</script>
 	</head>
 	<body>
+		<!--
 		<div id = "temp" style="position:absolute;">
 			&nbsp;<b>Members</b><br>
 			&nbsp;LS (S-Super Mentor)<br>
@@ -404,13 +508,14 @@
 			&nbsp;HIH (C-One Word)<br>
 			&nbsp;HJ (S-Pianist)
 		</div>
+		-->
 		
+		<canvas id="intro_star"></canvas>
 		<div id="intro_text"></div>
 		<img id="samsung" src="img/Samsung.png"/>
 		<div class="circle white first"></div>
 		<div class="circle black second"></div>
 		<div class="circle white third"></div>
 		<img id="intro_logo" src="img/Logo.png"/>
-		<canvas id="intro_lines"></canvas>
 	</body>
 </html>

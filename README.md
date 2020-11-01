@@ -53,7 +53,7 @@ http://ghchart.rshah.org
 ```
 - Star field effet
 ```
-http://glslsandbox.com/e#41328.3
+http://jsfiddle.net/ditman/8Ffrw/
 ```
 - Three.js
 ```
