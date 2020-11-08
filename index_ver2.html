@@ -229,6 +229,7 @@
 					
 					$("div").remove(".circle");
 					$("img").remove("#samsung");
+					$("div").remove("#fatkun-drop-panel");
 				}, 6000);
 			});
 
@@ -246,6 +247,14 @@
 						time = 0;
 						uniforms.amplitude.value = 0;
 						animateStarField();
+						$("#intro_logo").css("cursor", "pointer");
+						$("#intro_logo").click(function() {
+							$("body").css("background", "#fff");
+							$("#intro_star").fadeTo("slow", 0, function() {
+								$("div").remove("#intro_text");
+								$("canvas").remove("#intro_star");
+							});
+						}); 
 						cancelAnimationFrame(id);
 					}	
 				} 
