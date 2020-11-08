@@ -1,6 +1,6 @@
 img/Logo.png
 img/Samsung.png
-*.js
-build/*
-helvetiker_bold.typeface.json
+build/three.module.js
+font/helvetiker_bold.typeface.json
+js/TessellateModifier.js
 birthday.txt
