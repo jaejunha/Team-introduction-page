@@ -60,7 +60,9 @@
 		<script>
 			$(document).ready(function() {
 				setTimeout(function() {
+					$("#intro_logo").attr("src", "img/logo/logo.gif");
 					var i = 2;
+					/*
 					var ani_logo = setInterval(function() {
 						if (i < 10)
 							$("#intro_logo").attr("src", "img/logo/000" + i + ".png");
@@ -74,18 +76,32 @@
 							animateStarField();
 							$("#intro_logo").css("cursor", "pointer");
 							$("#intro_logo").click(function() {
-								/*
+								
 								$("body").css("background", "#fff");
 								$("#intro_star").fadeTo("slow", 0, function() {
 									$("div").remove("#intro_text");
 									$("canvas").remove("#intro_star");
 								});
-								*/
 							}); 
 						}
 						i += 1;
-					}, 20);
+					}, 20); */
 				}, 3000);
+
+
+				setTimeout(function() {
+					animateStarField();
+					$("img").remove("#intro_samsung");
+					$("#intro_logo").css("cursor", "pointer");
+					$("#intro_logo").click(function() {
+								
+						$("body").css("background", "#fff");
+						$("#intro_star").fadeTo("slow", 0, function() {
+							$("div").remove("#intro_text");
+							$("canvas").remove("#intro_star");
+						});
+					}); 
+				}, 8000);
 			});
 		</script>
 
@@ -347,6 +363,6 @@
 		
 		<canvas id="intro_star"></canvas>
 		<img id="intro_samsung" src="img/Samsung.png"/>
-		<img id="intro_logo" src="img/logo/0001.png"/>
+		<img id="intro_logo"/>
 	</body>
 </html>
