@@ -1,8 +1,9 @@
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<link rel="shortcut icon" href="img/logo/logo.ico">
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
+		<title>WAY Page</title>
 		<style>
 			body{
 				margin: 0;
@@ -62,30 +63,6 @@
 				setTimeout(function() {
 					$("#intro_logo").attr("src", "img/logo/logo.gif");
 					var i = 2;
-					/*
-					var ani_logo = setInterval(function() {
-						if (i < 10)
-							$("#intro_logo").attr("src", "img/logo/000" + i + ".png");
-						else if (i < 100)
-							$("#intro_logo").attr("src", "img/logo/00" + i + ".png");
-						else if ( i <= 280)
-							$("#intro_logo").attr("src", "img/logo/0" + i + ".png");
-						else{
-							$("img").remove("#intro_samsung");
-							clearInterval(ani_logo);
-							animateStarField();
-							$("#intro_logo").css("cursor", "pointer");
-							$("#intro_logo").click(function() {
-								
-								$("body").css("background", "#fff");
-								$("#intro_star").fadeTo("slow", 0, function() {
-									$("div").remove("#intro_text");
-									$("canvas").remove("#intro_star");
-								});
-							}); 
-						}
-						i += 1;
-					}, 20); */
 				}, 3000);
 
 
