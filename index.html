@@ -57,14 +57,19 @@
 				position: absolute;
 				z-index: 1; 
 			}
+			
+			#top{
+				background-color: #fff;
+				border-bottom: 1px solid #dbdbdb;
+			}
 		</style>
-		<script>
+		<script>	
+			var is_main = false;
 			$(document).ready(function() {
 				setTimeout(function() {
 					$("#intro_logo").attr("src", "img/logo/logo.gif");
 					var i = 2;
 				}, 3000);
-
 
 				setTimeout(function() {
 					animateStarField();
@@ -72,11 +77,28 @@
 					$("#intro_logo").css("cursor", "pointer");
 					$("#intro_logo").click(function() {
 								
-						$("body").css("background", "#fff");
-						$("#intro_star").fadeTo("slow", 0, function() {
-							$("div").remove("#intro_text");
-							$("canvas").remove("#intro_star");
-						});
+						if (is_main == false){
+							$("body").css("background", "#fafafa");
+							$("#intro_star").fadeTo("slow", 0, function() {
+								$("div").remove("#intro_text");
+								$("canvas").remove("#intro_star");
+							});
+							$("#intro_logo").animate({
+								width: 120
+							}, 1000, function() {
+								is_main = true;
+								$("#intro_logo").css("position", "fixed").animate({
+									left: -$(window).width() + 60 + 600,
+									top: -$(window).height() + 45
+								}, 500, function(){
+									$("#top").css("width", $(window).width());
+									$("#top").css("height", $("#intro_logo").height() - 20);
+									$("#top").css("position", "fixed");
+								});
+							});
+						}else{
+							alert("홈으로 주소 이동 추가예정");
+						}
 					}); 
 				}, 8000);
 			});
@@ -340,6 +362,8 @@
 		
 		<canvas id="intro_star"></canvas>
 		<img id="intro_samsung" src="img/Samsung.png"/>
-		<img id="intro_logo"/>
+		<div id="top">
+			<img id="intro_logo"/>
+		</div>
 	</body>
 </html>
