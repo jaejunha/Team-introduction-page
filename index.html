@@ -58,9 +58,32 @@
 				z-index: 1; 
 			}
 			
-			#top{
+			header{
 				background-color: #fff;
 				border-bottom: 1px solid #dbdbdb;
+			}
+			nav, section, aside{
+				float: left;
+				visibility: hidden;
+			}
+			nav{
+				text-align: center;
+				width: 100px;
+				height: 600px;
+				//background-color: #f00;
+			}
+			section{
+				text-align: center;
+				width: 600px;
+				height: 600px;
+				background-color: #000;
+			}
+			aside{
+				text-align: center;
+				margin-left: 20px;
+				width: 200px;
+				height: 600px;
+				background-color: #aaa;
 			}
 		</style>
 		<script>	
@@ -87,13 +110,20 @@
 								width: 120
 							}, 1000, function() {
 								is_main = true;
-								$("#intro_logo").css("position", "fixed").animate({
+								$("#intro_logo").animate({
 									left: -$(window).width() + 60 + 600,
 									top: -$(window).height() + 45
 								}, 500, function(){
-									$("#top").css("width", $(window).width());
-									$("#top").css("height", $("#intro_logo").height() - 20);
-									$("#top").css("position", "fixed");
+									$("header").css("width", $(window).width());
+									$("header").css("height", $("#intro_logo").height() - 20);
+
+									$("nav").css("visibility", "visible");
+									$("section").css("visibility", "visible");
+									$("aside").css("visibility", "visible");
+
+									$("nav").css("width", ($(window).width() - 600) / 2);
+									$("aside").css("width", 200);
+									
 								});
 							});
 						}else{
@@ -362,8 +392,11 @@
 		
 		<canvas id="intro_star"></canvas>
 		<img id="intro_samsung" src="img/Samsung.png"/>
-		<div id="top">
+		<header>
 			<img id="intro_logo"/>
-		</div>
+		</header>
+		<nav></nav>
+		<section></section>	
+		<aside>Instagram, Blog</aside>
 	</body>
 </html>
