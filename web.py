@@ -2,17 +2,21 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 
 CONST_PORT = 810
 
+CONST_KB = 1024 
+
 def checkImage(path):
 	return ".png" in path or ".jpg" in path or ".gif" in path or ".ico" in path
 
 class HandlerHTTP(BaseHTTPRequestHandler):
 	def setup(self):
 		BaseHTTPRequestHandler.setup(self)
-		self.request.settimeout(2)
 
-	def _set_headers(self, code):
+	def _set_headers(self, code, type = "html"):
 		self.send_response(code)
-		self.send_header('Content-type', 'text/html')
+		if type == "html":
+			self.send_header('Content-type', 'text/html')
+		else:
+			self.send_header('Content-type', 'image/' + type)
 		self.end_headers()
 	
 	def _redirect(self, url):
@@ -28,13 +32,18 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			self.path = "." + self.path
 
 		try:
-			self._set_headers(200)
-		
 			if checkImage(self.path):
+				self._set_headers(200, self.path.split(".")[-1])
 				file = open(self.path, "rb")
-				data = file.read()
-				self.wfile.write(data)
+				sum_data = b""
+				while True:
+					data = file.read(CONST_KB)
+					sum_data += data
+					if data == b"":
+						break
+				self.wfile.write(sum_data)
 			else:
+				self._set_headers(200, "html")
 				file = open(self.path, "r", encoding = "utf-8")
 				str_data = ""
 				for line in file.readlines():
