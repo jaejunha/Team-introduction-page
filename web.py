@@ -10,6 +10,7 @@ def checkImage(path):
 class HandlerHTTP(BaseHTTPRequestHandler):
 	def setup(self):
 		BaseHTTPRequestHandler.setup(self)
+		self.request.settimeout(2)
 
 	def _set_headers(self, code, type = "html"):
 		self.send_response(code)
@@ -36,13 +37,11 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 			if checkImage(self.path):
 				self._set_headers(200, self.path.split(".")[-1])
 				file = open(self.path, "rb")
-				sum_data = b""
-				while True:
+				data = file.read(CONST_8KB)
+				self.wfile.write(data)
+				while data:
 					data = file.read(CONST_8KB)
-					sum_data += data
-					if data == b"":
-						break
-				self.wfile.write(sum_data)
+					self.wfile.write(data)
 			else:
 				self._set_headers(200, "html")
 				file = open(self.path, "r", encoding = "utf-8")
@@ -50,6 +49,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 				for line in file.readlines():
 					str_data += line
 				self.wfile.write(str_data.encode())
+
 			file.close()
 
 		except FileNotFoundError:
