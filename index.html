@@ -65,7 +65,7 @@
 			}
 			nav, section, aside{
 				float: left;
-				visibility: hidden;
+				display: none;
 			}
 			nav{
 				margin-right: 20px;
@@ -110,7 +110,7 @@
 								is_main = true;
 								$("#intro_logo").animate({
 									left: -$(window).width() / 2 + 60,
-									top: -$(window).height() + 45
+									top: -$(window).height() + 65 
 								}, 500, function(){
 
 									$("body").css("overflow", "visible");
@@ -118,9 +118,9 @@
 									$("header").css("width", $(window).width());
 									$("header").css("height", $("#intro_logo").height() - 20);
 
-									$("nav").css("visibility", "visible");
-									$("section").css("visibility", "visible");
-									$("aside").css("visibility", "visible");
+									$("nav").css("display", "inline");
+									$("section").css("display", "inline");
+									$("aside").css("display", "inline");
 
 									$("nav").css("width", $(window).width()/ 4 - 20);
 									$("section").css("width", $(window).width() / 2);
@@ -402,22 +402,22 @@
 			<div>
 			우진 프로님이 누구죠?<br>
 			만든사람: LSH<br>
-			<img class="img_main" src="img/main/1.jpg" width="580"/>
+			<img class="img_main" src="img/main/1.jpg"/>
 			</div>
 			<div>
 			퇴사자 발생!<br>
 			만든사람: LSH<br>
-			<img class="img_main" src="img/main/2.jpg" width="580"/>
+			<img class="img_main" src="img/main/2.jpg"/>
 			</div>
 			<div>
 			퇴사자 발생!<br>
 			만든사람: LSH<br>
-			<img class="img_main" src="img/main/3.jpg" width="580"/>
+			<img class="img_main" src="img/main/3.jpg"/>
 			</div>
 			<div>
 			DS 창조관 가다!<br>
 			만든사람: LSH<br>
-			<img class="img_main" src="img/main/4.jpg" width="580"/>
+			<img class="img_main" src="img/main/4.jpg"/>
 			</div>
 			<div>
 			평택에피소드 타이밍이랑 내용좀 알려주기<br>
