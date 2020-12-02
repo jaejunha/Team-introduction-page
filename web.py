@@ -26,6 +26,8 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 		
 	def do_GET(self):
 		if self.path == "/":
+			self.path = "intro.html"
+		elif self.path == "/index":
 			self.path = "index.html"
 		else:
 			self.path = "." + self.path
