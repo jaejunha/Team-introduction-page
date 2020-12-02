@@ -2,7 +2,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 
 CONST_PORT = 810
 
-CONST_KB = 1024 
+CONST_8KB = 8192 
 
 def checkImage(path):
 	return ".png" in path or ".jpg" in path or ".gif" in path or ".ico" in path
@@ -37,7 +37,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 				file = open(self.path, "rb")
 				sum_data = b""
 				while True:
-					data = file.read(CONST_KB)
+					data = file.read(CONST_8KB)
 					sum_data += data
 					if data == b"":
 						break
