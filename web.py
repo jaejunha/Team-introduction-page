@@ -10,7 +10,7 @@ def checkImage(path):
 class HandlerHTTP(BaseHTTPRequestHandler):
 	def setup(self):
 		BaseHTTPRequestHandler.setup(self)
-		self.request.settimeout(2)
+		self.request.settimeout(1)
 
 	def _set_headers(self, code, type = "html"):
 		self.send_response(code)

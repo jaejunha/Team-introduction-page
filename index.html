@@ -14,9 +14,9 @@
 			}
 			
 			#intro_logo{
+				display: none;
 				position: absolute;
 				margin: auto;
-				width: 120px;
 				top: 0;
 				bottom: 0;
 				left: 0;
@@ -66,12 +66,14 @@
 				$("aside").css("width", 200);
 
 				$(".img_main").css("width", $(window).width() / 2 - 20);
+
+				$("#intro_logo").fadeIn(3000);
 			});
 		</script>
 	</head>
 	<body>
 		<header>
-			<img id="intro_logo" src="img/logo/logo.gif"/>
+			<img id="intro_logo" width=40 src="img/logo/logo.png">
 		</header>
 		<nav></nav>
 		<section>
