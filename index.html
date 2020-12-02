@@ -68,15 +68,12 @@
 				visibility: hidden;
 			}
 			nav{
-				text-align: center;
-				width: 100px;
+				margin-right: 20px;
 				height: 600px;
-				//background-color: #f00;
 			}
 			section{
 				text-align: center;
 				margin-top: 20px;
-				width: 600px;
 				background-color: #fff;
 				border: 1px solid #dbdbdb;
 			}
@@ -84,7 +81,6 @@
 				text-align: center;
 				margin-top: 20px;
 				margin-left: 20px;
-				width: 200px;
 				height: 600px;
 				background-color: #aaa;
 			}
@@ -114,7 +110,7 @@
 							}, 1000, function() {
 								is_main = true;
 								$("#intro_logo").animate({
-									left: -$(window).width() + 60 + 600,
+									left: -$(window).width() / 2 + 60,
 									top: -$(window).height() + 45
 								}, 500, function(){
 
@@ -127,9 +123,11 @@
 									$("section").css("visibility", "visible");
 									$("aside").css("visibility", "visible");
 
-									$("nav").css("width", ($(window).width() - 600) / 2);
+									$("nav").css("width", $(window).width()/ 4 - 20);
+									$("section").css("width", $(window).width() / 2);
 									$("aside").css("width", 200);
 									
+									$(".img_main").css("width", $(window).width() / 2 - 20);
 								});
 							});
 						}else{
@@ -403,13 +401,13 @@
 			<br>
 			<br>
 			우진 프로님이 누구죠?<br>
-			<img src="img/main/1.jpg" width="580"/>
+			<img class="img_main" src="img/main/1.jpg" width="580"/>
 			퇴사자 발생!<br>
-			<img src="img/main/2.jpg" width="580"/>
+			<img class="img_main" src="img/main/2.jpg" width="580"/>
 			퇴사자 발생!<br>
-			<img src="img/main/3.jpg" width="580"/>
+			<img class="img_main" src="img/main/3.jpg" width="580"/>
 			DS 창조관 가다!<br>
-			<img src="img/main/4.jpg" width="580"/>
+			<img class="img_main" src="img/main/4.jpg" width="580"/>
 			평택에피소드 타이밍이랑 내용좀 알려주기<br>
 			졸귀 SY, 이쁜 SY도 올릴 예정<br>
 			모임 사진은 코로나 이후에 생각 중...<br>
