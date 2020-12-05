@@ -12,24 +12,18 @@
 				height: 100%;
 				background: #fafafa;
 			}
-			
-			#intro_logo{
-				display: none;
-				position: absolute;
-				margin: auto;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				right: 0; 
-				z-index: 2;
-				
-				cursor: pointer;
-			}
-			
 			header{
+				display: table-cell;
+				vertical-align: middle;
+				height: 50px;
 				background-color: #fff;
 				border-bottom: 1px solid #dbdbdb;
 			}
+			#intro_logo{
+                                display: none;
+				position: relative;
+                                cursor: pointer;
+                        }
 			nav, section, aside{
 				float: left;
 			}
@@ -53,14 +47,12 @@
 		</style>
 		<script>	
 			$(document).ready(function() {
-				$("#intro_logo").css("left", -$(window).width() / 2 + 60);
-				$("#intro_logo").css("top", -$(window).height() + 50);
+				$("#intro_logo").css("left", $(window).width() / 4);
 				$("#intro_logo").click(function(){
-					alert("추가예정");
+					location.href = "/";
 				});
 
 				$("header").css("width", $(window).width());
-				$("header").css("height", 47.5);
 
 				$("nav").css("width", $(window).width()/ 4 - 20);
 				$("section").css("width", $(window).width() / 2);
@@ -79,26 +71,7 @@
 		<nav></nav>
 		<section>
 			<div>
-			<b>Members</b><br>
-			(will be implemented using python)<br>
-			(나중에 생일 모두 알려줘)<br>
-			LS (킹 갓 제너럴 멘토님)<br>
-			PJS (고량주 먹는 리더)<br>
-			KMJ (패셔니스타)<br>
-			KSY (부장님)<br>
-			KWJ (수호자)<br>
-			KYR (어몽어스)<br>
-			PSY (소통퀸)<br>
-			PHJ (새콤달콤 DJ Park) / 10월 24일 생<br>
-			PHJ (박수맨)<br>
-			SJW (갓서포터)<br>
-			LSH (개그맨)<br>
-			LYM (재무전문가)<br>
-			LJY (진정한 인싸) / 11월 17일 생<br>
-			JHW (덮밥 34인분 예약됨) / 11월 22일 생<br>
-			HJJ<br>
-			HIH (한마디만 해도 될까) / 10월 23일 생<br>
-			HJ (피아니스타) / 12월 01일 생
+			#members
 			</div>
 			<div>
 			우진 프로님이 누구죠?<br>
