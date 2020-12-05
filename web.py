@@ -7,6 +7,20 @@ CONST_8KB = 8192
 def checkImage(path):
 	return ".png" in path or ".jpg" in path or ".gif" in path or ".ico" in path
 
+def getContent(path):
+	str = ""
+	file = open(path, "r", encoding = "utf-8")
+	for i, line in enumerate(file.readlines()):
+		if i == 0:
+			str += "<h1>%s</h1>" % line.split(":")[1].strip()
+		elif i == 1:
+			continue
+		else:
+			str += line
+
+	return str
+
+
 class HandlerHTTP(BaseHTTPRequestHandler):
 	def setup(self):
 		BaseHTTPRequestHandler.setup(self)
@@ -47,6 +61,12 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 				file = open(self.path, "r", encoding = "utf-8")
 				str_data = ""
 				for line in file.readlines():
+					if ":)" in line:
+						start = line.find(":)")
+						end = line.find("&")
+						path = "_post/" + line[start + 2: end] + ".txt"
+						content = getContent(path)
+						line = line.replace(line[start: end + 1], content)
 					str_data += line
 				self.wfile.write(str_data.encode())
 
