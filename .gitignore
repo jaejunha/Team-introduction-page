@@ -1,7 +1,5 @@
 img/logo/*
 img/main/*
 img/Samsung.png
-build/three.module.js
-font/helvetiker_bold.typeface.json
-js/TessellateModifier.js
-birthday.txt
+_post/*
+nohup.out
