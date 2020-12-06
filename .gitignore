@@ -2,4 +2,6 @@ img/logo/*
 img/main/*
 img/Samsung.png
 _post/*
+_favorite/*
+session.txt
 nohup.out
