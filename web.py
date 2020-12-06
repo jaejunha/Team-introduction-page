@@ -1,4 +1,6 @@
+import random
 import requests
+import urllib.request
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 URL_INSTAGRAM = "https://www.instagram.com/"
@@ -8,7 +10,7 @@ CONST_8KB = 8192
 
 dic_favorite = None
 
-def getInstaProfile(user):
+def getInstaProfile(name, user):
 	img = None
 
 	url = URL_INSTAGRAM + user
@@ -21,6 +23,10 @@ def getInstaProfile(user):
 	for line in list_line:
 		if "og:image" in line:
 			img = line.split('"')[3]
+			close = urllib.request.urlopen(img).read()
+			file_img = open("_favorite/" + name + ".png", "wb")
+			file_img.write(close)
+			file_img.close()
 			break
 	return img
 
@@ -34,7 +40,7 @@ def updateProfile():
 			list_ele = line.strip().split(",")
 			name = list_ele[0].strip()
 			user = list_ele[1].strip()
-			img = getInstaProfile(user)
+			img = getInstaProfile(name, user)
 
 			dic_favorite[name] = {"user": user, "img": img}
 	pass
@@ -111,17 +117,19 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 						line = line.replace(line[start: end + 1], content)
 					if ";)" in line:
 						start = line.find(";)")
-						end = line.find("&")
+						end = line.find("&")	
+						list_name = list(dic_favorite.keys())
+						random.shuffle(list_name)
 						content = ""
-						for name in dic_favorite.keys():
-							content += "<div>"
+						for name in list_name:
+							content += '<div style="display:inline-block;clear:both;padding:5px;"><center><a href="https://www.instagram.com/' + dic_favorite[name]["user"] + '" target="_blank">'
 							img = dic_favorite[name]["img"]
-							print(img)
 							if img is not None:
-								content += "<img src=" + img + "/>"
+								content += '<img class="img_favorite" src="_favorite/' + name + '.png"/><br>'
 							else:
-								content += '<img src="" />'
-							content += "</div>"
+								content += '<img class="img_favorite" src="" /><br>'
+							content += name
+							content += "</center></a></div>"
 						line = line.replace(line[start: end + 1], content)
 							
 						

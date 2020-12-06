@@ -12,6 +12,10 @@
 				height: 100%;
 				background: #fafafa;
 			}
+			a{
+				color: black;
+				text-decoration: none;
+			}
 			header{
 				position: fixed;
 				height: 50px;
@@ -25,12 +29,15 @@
                                 cursor: pointer;
                         }
 			nav, section, aside{
-				margin-top: 50px;
 				float: left;
 			}
 			nav{
+				margin-top: 50px;
 				margin-right: 20px;
 				height: 600px;
+                        }
+			section{
+				margin-top: 50px;
 			}
 			section div{
 				margin-top: 20px;
@@ -38,12 +45,15 @@
 				background-color: #fff;
 				border: 1px solid #dbdbdb;	
 			}
-			aside div{
-				text-align: center;
-				margin-top: 20px;
+			aside{
+				padding: 10px;
+				margin-top: 70px;
 				margin-left: 20px;
-				height: 600px;
-				background-color: #aaa;
+				background-color: #fff;
+				border: 1px solid #dbdbdb;
+			}
+			.img_favorite{
+				 border-radius: 70%;
 			}
 		</style>
 		<script>	
@@ -60,6 +70,7 @@
 				$("aside").css("width", 200);
 
 				$(".img_main").css("width", $(window).width() / 2 - 20);
+				$(".img_favorite").css("width", $(window).width() / 32 - 10 );
 
 				$("#intro_logo").fadeIn(3000);
 			});
@@ -110,9 +121,11 @@
 		</section>	
 		<aside>
 			<div>
-			Introduction<br>
-			Instagram, Blog<br>
+			<h1>Instagram</h1>
+			<div>
 			;)favorite&
+			</div>
+			KSY
 			</div>
 		</aside>
 	</body>
