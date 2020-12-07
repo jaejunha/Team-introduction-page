@@ -9,6 +9,17 @@ CONST_PORT = 810
 CONST_8KB = 8192 
 
 dic_favorite = None
+list_name = None
+
+def getMembers():
+	global list_name
+
+	list_name = []	
+	file = open("_favorite/members.txt", "r", encoding = "utf-8")
+	for line in file.readlines():
+		list_name.append(line.strip())
+
+	print(list_name)
 
 def getInstaProfile(name, user):
 	img = None
@@ -146,6 +157,7 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 
 if __name__ == "__main__":	
 
+	getMembers()
 	updateProfile()
 	server_http = HTTPServer(("", CONST_PORT), HandlerHTTP)
 	server_http.serve_forever()
