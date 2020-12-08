@@ -28,17 +28,13 @@
 				position: relative;
                                 cursor: pointer;
                         }
-			nav, section, aside{
-				float: left;
-			}
+			nav, section, aside{ float: left; }
 			nav{
 				margin-top: 50px;
 				margin-right: 20px;
 				height: 600px;
                         }
-			section{
-				margin-top: 50px;
-			}
+			section{ margin-top: 50px; }
 			section div{
 				margin-top: 20px;
 				padding: 10px;
@@ -52,9 +48,13 @@
 				background-color: #fff;
 				border: 1px solid #dbdbdb;
 			}
-			.img_favorite{
-				 border-radius: 70%;
+			.img_favorite{ border-radius: 70%;}
+			#table_rolling td{ cursor: pointer; }
+			.rolling { 
+				display: none; 
+				border: none;
 			}
+			
 		</style>
 		<script>	
 			$(document).ready(function() {
@@ -73,6 +73,16 @@
 				$(".img_favorite").css("width", $(window).width() / 32 - 10 );
 
 				$("#intro_logo").fadeIn(3000);
+
+				$("#table_rolling td").click(function(){
+					var class_rolling = $(".div_rolling_" + $(this)[0].innerHTML);
+					if (class_rolling.css("display") == "inline")
+						$(".rolling").css("display", "none");
+					else{
+						$(".rolling").css("display", "none");
+						$(class_rolling).css("display", "inline");
+					}
+				});
 			});
 		</script>
 	</head>
@@ -96,6 +106,20 @@
 			<div>
 				<center>
 					:)main/rolling&
+					<table id="table_rolling">
+						<tr><td>test</td>
+						</tr>
+						<tr><td>pest</td>
+						</tr>
+					</table>
+					<div>
+					<div class="rolling div_rolling_test">
+						test
+					</div>
+					<div class="rolling div_rolling_pest">
+						pest
+					</div>
+					</div>
 				</center>
 			</div>
 			<div>
