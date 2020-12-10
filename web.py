@@ -4,6 +4,7 @@ import urllib.request
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
 URL_INSTAGRAM = "https://www.instagram.com/"
+URL_NAVER = "https://blog.naver.com/PostList.nhn?blogId="
 
 CONST_PORT = 810
 CONST_8KB = 8192 
@@ -20,6 +21,23 @@ def getMembers():
 		list_name.append(line.strip())
 
 	print(list_name)
+
+def getNaverProfile(name, user):
+	img = None
+
+	url = URL_NAVER + user
+	print("Download image from: " + url)
+	res = requests.get(url)
+	list_line = res.text.split("\n")
+	for line in list_line:
+		if "og:image" in line:
+			img = line.split('"')[3]
+			close = urllib.request.urlopen(img).read()
+			file_img = open("_favorite/" + name + ".jpg", "wb")
+			file_img.write(close)
+			file_img.close()
+			break
+	return img
 
 def getInstaProfile(name, user):
 	img = None
@@ -45,6 +63,15 @@ def updateProfile():
 	global dic_favorite
 	dic_favorite = {}
 
+	file = open("_favorite/naver.txt", "r", encoding = "utf-8")
+	for line in file.readlines():
+		if "," in line:
+			list_ele = line.strip().split(",")
+			name = list_ele[0].strip()
+			user = list_ele[1].strip()
+			img = getNaverProfile(name, user)
+	file.close()
+
 	file = open("_favorite/instagram.txt", "r", encoding = "utf-8")
 	for line in file.readlines():
 		if "," in line:
@@ -54,7 +81,7 @@ def updateProfile():
 			img = getInstaProfile(name, user)
 
 			dic_favorite[name] = {"user": user, "img": img}
-	pass
+	file.close()
 
 def checkImage(path):
 	return ".png" in path or ".jpg" in path or ".gif" in path or ".ico" in path
