@@ -69,7 +69,10 @@ def updateProfile():
 			list_ele = line.strip().split(",")
 			name = list_ele[0].strip()
 			user = list_ele[1].strip()
+			type = "naver"
 			img = getNaverProfile(name, user)
+
+			dic_favorite[name] = {"user": user, "img": img, "type": type}
 	file.close()
 
 	file = open("_favorite/instagram.txt", "r", encoding = "utf-8")
@@ -78,9 +81,10 @@ def updateProfile():
 			list_ele = line.strip().split(",")
 			name = list_ele[0].strip()
 			user = list_ele[1].strip()
+			type = "instagram"
 			img = getInstaProfile(name, user)
 
-			dic_favorite[name] = {"user": user, "img": img}
+			dic_favorite[name] = {"user": user, "img": img, "type": type}
 	file.close()
 
 def checkImage(path):
@@ -160,10 +164,16 @@ class HandlerHTTP(BaseHTTPRequestHandler):
 						random.shuffle(list_name)
 						content = ""
 						for name in list_name:
-							content += '<div style="display:inline-block;clear:both;padding:5px;"><center><a href="https://www.instagram.com/' + dic_favorite[name]["user"] + '" target="_blank">'
+							if dic_favorite[name]["type"] == "instagram":
+								content += '<div style="display:inline-block;clear:both;padding:5px;"><center><a href="https://www.instagram.com/' + dic_favorite[name]["user"] + '" target="_blank">'
+							elif dic_favorite[name]["type"] == "naver":
+								content += '<div style="display:inline-block;clear:both;padding:5px;"><center><a href="https://blog.naver.com/' + dic_favorite[name]["user"] + '" target="_blank">'
 							img = dic_favorite[name]["img"]
 							if img is not None:
-								content += '<img class="img_favorite" src="_favorite/' + name + '.png"/><br>'
+								if dic_favorite[name]["type"] == "instagram":
+									content += '<img class="img_favorite" src="_favorite/' + name + '.png"/><br>'
+								elif dic_favorite[name]["type"] == "naver":
+									content += '<img class="img_favorite" src="_favorite/' + name + '.jpg"/><br>'
 							else:
 								content += '<img class="img_favorite" src="" /><br>'
 							content += name
